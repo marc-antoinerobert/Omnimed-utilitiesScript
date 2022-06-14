@@ -1,23 +1,28 @@
 // ==UserScript==
 // @name         Cucumber pimper
 // @namespace    http://tampermonkey.net/
-// @version      3.7
+// @version      7
 // @description  Pimp cucumber reports
 // @author       mquiron, mcormier, nguillet, shenault, marobert
 // @match        https://jenkins.omnimed.com/*job/*/cucumber-html-reports/*overview-tags.html
 // @grant        none
 // ==/UserScript==
 $(document).ready(function() {
-	$("<style type='text/css'> .cukeMoc { background-color: black !important; color: white !important; } </style>").appendTo("head");
-	$("<style type='text/css'> .cukeNic { background-color: red !important; color: white !important; } </style>").appendTo("head");
-	$("<style type='text/css'> .cukeVal { background-color: blue !important; color: white !important; } </style>").appendTo("head");
+	$("<style type='text/css'> .cukeDos { background-color: blue !important; color: white !important; } </style>").appendTo("head");
+	$("<style type='text/css'> .cukeMed { background-color: black !important; color: white !important; } </style>").appendTo("head");
+	$("<style type='text/css'> .cukeReq { background-color: darkseagreen !important; color: white !important; } </style>").appendTo("head");
 	$("<style type='text/css'> .cukeMad { background-color: green !important; color: white !important; } </style>").appendTo("head");
+	$("<style type='text/css'> .cukeInt { background-color: red !important; color: white !important; } </style>").appendTo("head");
 	$("<style type='text/css'> .cukeAll { background-color: grey !important; color: white !important; } </style>").appendTo("head");
 });
 
 function colorCucumberTagForQA(tag, qa) {
 	if ($('.tagname > a:contains(' + tag + ')').length !== 0) {
-		$('.tagname > a:contains(' + tag + ')').removeClass('cukeVal', 'cukeMad', 'cukeNic', 'cukeMoc');
+		$('.tagname > a:contains(' + tag + ')').removeClass('cukeDos');
+		$('.tagname > a:contains(' + tag + ')').removeClass('cukeReq');
+		$('.tagname > a:contains(' + tag + ')').removeClass('cukeMed');
+		$('.tagname > a:contains(' + tag + ')').removeClass('cukeMad');
+		$('.tagname > a:contains(' + tag + ')').removeClass('cukeInt');
 		$('.tagname > a:contains(' + tag + ')').addClass('cuke' + qa);
 	} else {
 		console.warn('Cucumber tag ' + tag + ' does not exists');
@@ -27,20 +32,21 @@ function colorCucumberTagForQA(tag, qa) {
 function colorCucumberTags() {
 	var qa = '';
 
-	//Val
-	qa = 'Val';
+	//Équipe Dossier
+	qa = 'Dos';
 	//----global---- //doit etre avant tous les tags specifiques des autres QA
-	colorCucumberTagForQA('@Dossier', qa);
+	colorCucumberTagForQA('Dossier', qa);
+    colorCucumberTagForQA('ActionLog', qa);
 	//----global---- //
 	colorCucumberTagForQA('Antecedent', qa);
 	colorCucumberTagForQA('AviseurHpn', qa);
 	colorCucumberTagForQA('Cnesst', qa);
 	colorCucumberTagForQA('Contexte', qa);
-	colorCucumberTagForQA('@DsqSh', qa);
-	colorCucumberTagForQA('FacturationPrivee', qa);
+	colorCucumberTagForQA('acturation', qa);
 	colorCucumberTagForQA('MaladieChronique', qa);
 	colorCucumberTagForQA('Note', qa);
-	colorCucumberTagForQA('@OCAngular', qa);
+	colorCucumberTagForQA('@Notification', qa);
+	colorCucumberTagForQA('OCAngular', qa);
 	colorCucumberTagForQA('Outil', qa);
 	colorCucumberTagForQA('Probleme', qa);
 	colorCucumberTagForQA('Dictionnaire', qa);
@@ -52,58 +58,69 @@ function colorCucumberTags() {
 	//----Securite----
 	colorCucumberTagForQA('Vitaux', qa);
 
-	//Mad (jay et Marc)
-	qa = 'Mad'
+	//Équipe Requetes et resultats
+	qa = 'Req';
 	colorCucumberTagForQA('@Aide', qa);
-	colorCucumberTagForQA('@AdministrationActivite', qa);
-	colorCucumberTagForQA('@AdministrationStatut', qa);
-	colorCucumberTagForQA('@AdministrationVisioconférence', qa);
-	colorCucumberTagForQA('@CentreAdmin', qa);
-	colorCucumberTagForQA('@Notification', qa);
-	colorCucumberTagForQA('@RecherchePatient', qa);
-	colorCucumberTagForQA('@RendezVous', qa);
-	colorCucumberTagForQA('SalleAttente', qa);
-
-	//Nic
-	qa = 'Nic';
 	colorCucumberTagForQA('Contact', qa);
-	colorCucumberTagForQA('@DsqAcces', qa);
-	colorCucumberTagForQA('@DsqSqii', qa);
-	colorCucumberTagForQA('@DsqSqil', qa);
+    colorCucumberTagForQA('Courriel', qa);
+	colorCucumberTagForQA('Sms', qa);
 	//----Introduction----
 	colorCucumberTagForQA('@Nouvelle', qa);
 	colorCucumberTagForQA('@MenuOmnimed', qa);
-	colorCucumberTagForQA('@ProfilUtilisateur', qa);
+	colorCucumberTagForQA('@Profil', qa);
+	colorCucumberTagForQA('@UProfil', qa);
+	colorCucumberTagForQA('@IProfil', qa);
 	//----Introduction----
 	colorCucumberTagForQA('Requete', qa);
 	//----Resultat----
 	colorCucumberTagForQA('@DossierResultat', qa);
 	colorCucumberTagForQA('@DossierActionLogResultat', qa);
-	colorCucumberTagForQA('@DroitResultat', qa);
 	colorCucumberTagForQA('RevisionResultat', qa);
 	//----Resultat----
-	//----Tache----
 	colorCucumberTagForQA('Tache', qa);
-	colorCucumberTagForQA('Umf', qa);
-	//----Tache----
-	//----SessionOnimed----
+
+    //Équipe Médico admin
+	qa = 'Mad';
+    colorCucumberTagForQA('AdministrationActivite', qa);
+	colorCucumberTagForQA('AdministrationStatut', qa);
+	colorCucumberTagForQA('AdministrationVisio', qa);
+	colorCucumberTagForQA('@CentreAdmin', qa);
+    colorCucumberTagForQA('@UCommunicationPatient', qa);
+	colorCucumberTagForQA('@RecherchePatient', qa);
+	colorCucumberTagForQA('RendezVous', qa);
+	colorCucumberTagForQA('SalleAttente', qa);
+    colorCucumberTagForQA('Omnidesk', qa);
+
+    //Équipe Médication
+	qa = 'Med';
+	colorCucumberTagForQA('@DossierAllergie', qa);
+	colorCucumberTagForQA('@DossierActionLogAllergie', qa);
+    colorCucumberTagForQA('@DossierActionLogImmunisation', qa);
+	colorCucumberTagForQA('@DossierImmunisation', qa);
+	colorCucumberTagForQA('@Immunisation', qa);
+	colorCucumberTagForQA('@DsqSqim', qa);
+	colorCucumberTagForQA('@DsqAcces', qa);
+	colorCucumberTagForQA('@DsqSqii', qa);
+	colorCucumberTagForQA('@DsqSqil', qa);
+    colorCucumberTagForQA('Fax', qa);
+	colorCucumberTagForQA('Medication', qa);
+	colorCucumberTagForQA('Prescribeit', qa);
+    colorCucumberTagForQA('CentreTransmission', qa);
+    colorCucumberTagForQA('TransmissionDashboard', qa);
+
+    //Équipe Intégration
+    qa = 'Int';
+    //----SessionOnimed----
 	colorCucumberTagForQA('@Authentification', qa);
 	colorCucumberTagForQA('@ExpirationSession', qa);
 	//----SessionOnimed----
-
-	//Moc
-	qa = 'Moc';
-	colorCucumberTagForQA('@DossierAllergie', qa);
-	colorCucumberTagForQA('@DossierActionLogAllergie', qa);
-	colorCucumberTagForQA('@DossierImmunisation', qa);
-	colorCucumberTagForQA('@DsqSqim', qa);
-	colorCucumberTagForQA('ActionLogImmunisation', qa);
-	colorCucumberTagForQA('Medication', qa);
+	colorCucumberTagForQA('Umf', qa);
 
 	//All
 	qa = 'All'
 	colorCucumberTagForQA('@CreationDonnee', qa);
-	colorCucumberTagForQA('@Exemple', qa);
+	colorCucumberTagForQA('Exemple', qa);
 }
 
 colorCucumberTags();
+
